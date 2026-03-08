@@ -8,7 +8,7 @@ import urllib.parse
 genai.configure(api_key=st.secrets["GOOGLE_API_KEY"])
 
 # 2. ページ設定
-st.set_page_config(page_title="16タイプ性格変換", page_icon="✨")
+st.set_page_config(page_title="INFPタイプ変換", page_icon="🦋")
 
 # --- ダークモード用カスタムデザイン ---
 st.markdown("""
