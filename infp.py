@@ -136,11 +136,66 @@ if st.button("INFP風に変換する！", use_container_width=True):
         
         st.markdown("### 🎁 変換結果")
         st.success(response.text)
-        
+
+       
+        # --- 余白（結果とシェアボタンの間） ---
+        st.write("") 
+        st.write("")
         # SNSボタン
-        tweet_text = f"【{selected_type}メーカー】で変換したよ！\n\n{response.text[:80]}..."
+        # 1. あなたのアプリの新しいURL
+        app_url = "https://infp-maker.streamlit.app/" 
+
+        # 2. ツイート文面の構築
+        tweet_text = (
+           f"【#INFPメーカー】で文章を変換してみたよ！✨\n\n"
+           f"「{response.text[:60]}...」\n\n" # 結果をチラ見せして興味を引く
+           f"▼ ここで変換できるよ\n{app_url}\n\n"
+           f"Created by @cotty_personal\n"
+           f"#MBTI #INFP"
+)
+
+        # 3. URLエンコードしてシェア用URLを作成
         tweet_url = f"https://twitter.com/intent/tweet?text={urllib.parse.quote(tweet_text)}"
-        st.markdown(f'<center><a href="{tweet_url}" target="_blank" style="background-color:#1DA1F2;color:white;padding:10px 20px;border-radius:20px;text-decoration:none;">𝕏 でシェアする</a></center>', unsafe_allow_html=True)
+        
+        # センター寄せ＆少し余裕を持たせたデザイン
+        st.markdown(
+            f'<div style="text-align: center; margin: 20px 0;">'
+            f'<a href="{tweet_url}" target="_blank" style="background-color:#1DA1F2;color:white;padding:12px 30px;border-radius:25px;text-decoration:none;font-weight:bold;box-shadow: 0 4px 15px rgba(29, 161, 242, 0.3);">𝕏 で結果をシェアする</a>'
+            f'</div>', 
+            unsafe_allow_html=True
+        )
+
+        
+        # ---------------------------------------------------------
+        # ここから追記：アフィリエイトエリア
+        # ---------------------------------------------------------
+        # --- 大きめの余白（シェアと広告の間。ここが「心理的な区切り」になります） ---
+        st.markdown("<br><br><br>", unsafe_allow_html=True) 
+
+        # 3. アフィリエイトエリア（「おすすめ」として提示）
+        st.caption("【PR】本ページはアフィリエイト広告を利用しています")
+        
+        # 境界線（うっすらと）
+        st.markdown("---")
+        
+        st.subheader("🌙 INFPの感性を守る、今夜のしおり")
+        st.write("このメーカーを気に入ってくれたあなたへ。私が救われた「自分を愛するための本」を紹介させてください。")
+        
+        col1, col2 = st.columns([1, 2])
+        with col1:
+            st.image("https://m.media-amazon.com/images/I/81XyLz8B39L._SL1500_.jpg", width=130)
+            
+        with col2:
+            st.markdown("#### 「気がつきすぎて疲れる」が根こそぎなくなる本")
+            st.write("繊細さは、治すべき「弱さ」ではなく、守るべき「才能」です。もっと楽に呼吸するためのヒントがここにあります。")
+            # Amazonカラー（オレンジ系）のボタンで視覚的に区別
+            st.link_button("Amazonで詳しく見る", "https://amzn.to/4d4E96I")
+
+        st.markdown("---")
+        # ---------------------------------------------------------
+
+
+
 
 
 # 8. フッター（最下部）
@@ -149,6 +204,9 @@ st.markdown("---")
 x_id = "cotty_personal" 
 footer_html = f"""
     <div style="text-align: center; color: #888; font-size: 0.8rem;">
+    <div style="max-width: 600px; margin: 0 auto 20px auto; font-size: 0.7rem; color: #666; text-align: left; border-top: 1px solid #333; padding-top: 15px;">
+            ※ 本サイトは、Amazon.co.jpを宣伝しリンクすることによって紹介料を獲得できる手段を提供することを目的に設定されたアフィリエイトプログラムである、Amazonアソシエイト・プログラムの参加者です。
+        </div>
         Created by 
         <a href="https://x.com/{x_id}" target="_blank" style="color: #4B9CD3; text-decoration: none;">
             @{x_id}
