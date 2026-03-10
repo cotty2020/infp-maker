@@ -176,14 +176,14 @@ if st.button("変換する！"):
                 col_a, col_b, col_c = st.columns(3)
 
                 # 3つ目：月ライト（間接照明）
-                with col_c:
+                with col_a:
                  st.image("https://m.media-amazon.com/images/I/61KoufevM4L._AC_SL1000_.jpg", use_container_width=True)
                  st.markdown("自分だけの夜を照らす「月ライト」")
                  st.link_button("Amazon", "https://amzn.to/4bgyJTM")
 
                 # 1つ目：本（今のまま）
-                with col_a:
-                 st.image("https://m.media-amazon.com/images/I/81XyLz8B39L.jpg", use_container_width=True)
+                with col_c:
+                 st.image("https://m.media-amazon.com/images/I/71nTn7hMNdL._SY522_.jpg", use_container_width=True)
                  st.markdown("「気がつきすぎて疲れる」がなくなる本")
                  st.link_button("Amazon", "https://amzn.to/4rpFIjd")
 
@@ -191,7 +191,7 @@ if st.button("変換する！"):
                 with col_b:
                  st.image("https://m.media-amazon.com/images/I/51zCzizxKgL._AC_SL1320_.jpg", use_container_width=True)
                  st.markdown("パチパチ音がする焚き火キャンドル")
-                 st.link_button("Amazon", "https://amzn.to/46OnY9U") # ※実際のリンクに変更してください
+                 st.link_button("Amazon", "https://amzn.to/46OnY9U") 
 
                 
             except Exception as e:
