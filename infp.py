@@ -42,6 +42,13 @@ st.markdown("""
         background-color: #0E1117;
         color: #FFFFFF;
     }
+    /* 【追記】スマホの時だけタイトルを2.1remにする */
+    @media (max-width: 768px) {
+        .stApp h1 {
+            font-size: 2.1rem !important;
+        }
+    }
+            
     
     /* 入力欄やボックスのラベルの色を調整 */
     label {
@@ -127,7 +134,7 @@ mbti_data = {
 
 # 5. メイン画面
 st.title("🦋 INFP変換メーカー")
-st.markdown("入力した文章を、INFPになりきってリライトします。")
+st.markdown("入力した文章を、INFPになりきって書き換えます。")
 
 selected_type = "INFP (仲介者)"
 st.info(f"**【{selected_type}の特徴】**\n{mbti_data[selected_type]['info']}")
