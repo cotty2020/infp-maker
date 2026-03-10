@@ -143,7 +143,7 @@ st.markdown("入力した文章を、INFPになりきって書き換えます。
 selected_type = "INFP (仲介者)"
 st.info(f"**【{selected_type}の特徴】**\n{mbti_data[selected_type]['info']}")
 
-user_input = st.text_area("書き換えたい文章を入力してください", "今日はいい天気ですね。")
+user_input = st.text_area("書き換えたい文章を入力してください👇", "今日はいい天気ですね。")
 
 if st.button("変換する！"):
     if not user_input.strip():
@@ -180,18 +180,38 @@ if st.button("変換する！"):
                 encoded_text = urllib.parse.quote(tweet_text)
                 encoded_url = urllib.parse.quote(app_url)
         
-                # 4. シェア用リンクの作成
+                # 2. ここがポイント！ブラウザ用とアプリ用でリンクを使い分けます
+                # twitter://post... という形式にすると、スマホアプリが優先的に開きます
                 tweet_url = f"https://twitter.com/intent/tweet?text={encoded_text}&url={encoded_url}"
         
+                # HTMLのリンク部分を「twitter://」スキームに対応させる
                 st.markdown(f'''
                 <div style="margin-top: 20px; text-align: center;">
-                   <a href="{tweet_url}" target="_blank" 
-                       style="background-color:#1DA1F2; color:white; padding:12px 30px; 
+                   <a href="twitter://post?message={encoded_text}%20{encoded_url}" 
+                     onclick="window.open('{tweet_url}'); return false;"
+                     style="background-color:#1DA1F2; color:white; padding:12px 30px; 
                           border-radius:25px; text-decoration:none; font-weight:bold;
                           box-shadow: 0 4px 12px rgba(29, 161, 242, 0.3);">
-                       𝕏 でシェアする
+                    𝕏 でシェアする
                    </a>
                 </div>
+                <script>
+                // JavaScriptで、アプリがあればアプリ、なければブラウザを開く制御
+                const btn = document.querySelector('a[href^="twitter://"]');
+                btn.onclick = function(e) {{
+                    e.preventDefault();
+                    const appUrl = this.href;
+                    const webUrl = "{tweet_url}";
+                    
+                    // アプリ起動を試みる
+                    window.location.href = appUrl;
+                    
+                    // アプリが起動しなかった場合（PCなど）のために、少し遅れてブラウザ版を開く
+                    setTimeout(function() {{
+                        window.open(webUrl, '_blank');
+                    }}, 500);
+                }};
+                </script>
                 ''', unsafe_allow_html=True)
                 
 
