@@ -170,7 +170,7 @@ if st.button("変換する！"):
 
                 # アフィリエイト
                 st.markdown("<br><br>", unsafe_allow_html=True) 
-                st.caption("【PR】本ページはアフィリエイト広告を利用しています")
+                st.caption("【PR】")
                 st.subheader("🌙 INFPの感性を守る、今夜のしおり")
                 col1, col2 = st.columns([1, 2])
                 with col1:
