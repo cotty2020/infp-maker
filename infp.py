@@ -206,21 +206,21 @@ if st.button("変換する！"):
                    </a>
                 </div>
                 <script>
-                // JavaScriptで、アプリがあればアプリ、なければブラウザを開く制御
-                const btn = document.querySelector('a[href^="twitter://"]');
-                btn.onclick = function(e) {{
-                    e.preventDefault();
-                    const appUrl = this.href;
-                    const webUrl = "{tweet_url}";
+                  // JavaScriptで、アプリがあればアプリ、なければブラウザを開く制御
+                  const btn = document.querySelector('a[href^="twitter://"]');
+                  btn.onclick = function(e) {{
+                      e.preventDefault();
+                      const appUrl = this.href;
+                      const webUrl = "{tweet_url}";
                     
-                    // アプリ起動を試みる
-                    window.location.href = appUrl;
-                    
-                    // アプリが起動しなかった場合（PCなど）のために、少し遅れてブラウザ版を開く
-                    setTimeout(function() {{
-                        window.open(webUrl, '_blank');
-                    }}, 500);
-                }};
+                      // アプリ起動を試みる
+                      window.location.href = appUrl;
+                     
+                      // アプリが起動しなかった場合（PCなど）のために、少し遅れてブラウザ版を開く
+                      setTimeout(function() {{
+                          window.open(webUrl, '_blank');
+                       }}, 500);
+                   }};
                 </script>
                 ''', unsafe_allow_html=True)
                 
