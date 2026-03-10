@@ -14,15 +14,7 @@ ogp_image_url = "https://raw.githubusercontent.com/cotty2020/infp-maker/d7e6617d
 app_url = "https://infp-maker.streamlit.app/"
 description = "あなたの言葉を、INFP特有の繊細でエモい表現にリライトします。"
 
-# headタグを外して、metaタグだけに整理
-st.markdown(f"""
-    <meta property="og:title" content="INFPメーカー">
-    <meta property="og:description" content="{description}">
-    <meta property="og:image" content="{ogp_image_url}">
-    <meta property="og:url" content="{app_url}">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:image" content="{ogp_image_url}">
-    """, unsafe_allow_html=True)
+
 
 # 2. APIキーの設定
 # Secretsの名前が "GOOGLE_API_KEY" であることを確認してください
