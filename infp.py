@@ -175,23 +175,29 @@ if st.button("変換する！"):
                 # 3つの列を作成
                 col_a, col_b, col_c = st.columns(3)
 
-                # 3つ目：月ライト（間接照明）
+               # 1つ目：月ライト
                 with col_a:
-                 st.image("https://m.media-amazon.com/images/I/61KoufevM4L._AC_SL1000_.jpg", use_container_width=True)
-                 st.markdown("自分だけの夜を照らす「月ライト」")
-                 st.link_button("Amazon", "https://amzn.to/4bgyJTM")
+                    link_a = "https://amzn.to/4bgyJTM"
+                    img_a = "https://m.media-amazon.com/images/I/61KoufevM4L._AC_SL1000_.jpg"
+                    st.markdown(f'<a href="{link_a}" target="_blank"><img src="{img_a}" style="width:100%; border-radius:10px; transition: 0.3s;" onmouseover="this.style.opacity=\'0.8\'" onmouseout="this.style.opacity=\'1\'"></a>', unsafe_allow_html=True)
+                    st.markdown("**自分だけの夜を照らす「月ライト」**")
+                    st.link_button("Amazon", link_a)
 
-                # 1つ目：本（今のまま）
-                with col_c:
-                 st.image("https://m.media-amazon.com/images/I/71nTn7hMNdL._SY522_.jpg", use_container_width=True)
-                 st.markdown("「気がつきすぎて疲れる」がなくなる本")
-                 st.link_button("Amazon", "https://amzn.to/4rpFIjd")
-
-                # 2つ目：アロマキャンドル（WoodWickなど）
+                # 2つ目：アロマキャンドル
                 with col_b:
-                 st.image("https://m.media-amazon.com/images/I/51zCzizxKgL._AC_SL1320_.jpg", use_container_width=True)
-                 st.markdown("パチパチ音がする焚き火キャンドル")
-                 st.link_button("Amazon", "https://amzn.to/46OnY9U") 
+                    link_b = "https://amzn.to/46OnY9U"
+                    img_b = "https://m.media-amazon.com/images/I/51zCzizxKgL._AC_SL1320_.jpg"
+                    st.markdown(f'<a href="{link_b}" target="_blank"><img src="{img_b}" style="width:100%; border-radius:10px; transition: 0.3s;" onmouseover="this.style.opacity=\'0.8\'" onmouseout="this.style.opacity=\'1\'"></a>', unsafe_allow_html=True)
+                    st.markdown("**パチパチ音がする焚き火キャンドル**")
+                    st.link_button("Amazon", link_b)
+
+                # 3つ目：本
+                with col_c:
+                    link_c = "https://amzn.to/4rpFIjd"
+                    img_c = "https://m.media-amazon.com/images/I/71nTn7hMNdL._SY522_.jpg"
+                    st.markdown(f'<a href="{link_c}" target="_blank"><img src="{img_c}" style="width:100%; border-radius:10px; transition: 0.3s;" onmouseover="this.style.opacity=\'0.8\'" onmouseout="this.style.opacity=\'1\'"></a>', unsafe_allow_html=True)
+                    st.markdown("**「気がつきすぎて疲れる」がなくなる本**")
+                    st.link_button("Amazon", link_c)
 
                 
             except Exception as e:
