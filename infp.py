@@ -101,7 +101,7 @@ st.markdown("""
 
 @st.cache_resource
 def get_model():
-    return genai.GenerativeModel('gemini-2.0-flash')
+    return genai.GenerativeModel('gemini-1.5-flash')
 
 model = get_model()
 
