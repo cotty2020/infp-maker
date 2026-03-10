@@ -8,14 +8,24 @@ import os
 st.set_page_config(
     page_title="INFPメーカー | あなたの言葉をエモく変換",
     page_icon="🦋",
-    menu_items={
-        'About': f"""
-        ### INFPメーカー
-        あなたの言葉を、心の奥深くに潜るような優しい言葉に変換します。
-        
-        ![OGP]({ "https://raw.githubusercontent.com/cotty2020/infp-maker/d7e6617dcdd1d97978c8da4580abbaa4e8cd7f4e/ogp.png" })
-        """}
 )
+# --- 【重要】OGP画像を強制するためのHTMLメタタグ挿入 ---
+ogp_image_url = "https://raw.githubusercontent.com/cotty2020/infp-maker/d7e6617dcdd1d97978c8da4580abbaa4e8cd7f4e/ogp.png"
+app_url = "https://infp-maker.streamlit.app/"
+description = "あなたの言葉を、INFP特有の繊細でエモい表現にリライトします。"
+
+st.markdown(f"""
+    <head>
+        <meta property="og:title" content="INFPメーカー">
+        <meta property="og:description" content="{description}">
+        <meta property="og:image" content="{ogp_image_url}">
+        <meta property="og:url" content="{app_url}">
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:image" content="{ogp_image_url}">
+        <meta name="twitter:title" content="INFPメーカー">
+        <meta name="twitter:description" content="{description}">
+    </head>
+    """, unsafe_allow_html=True)
 
 # 2. APIキーの設定
 # Secretsの名前が "GOOGLE_API_KEY" であることを確認してください
@@ -167,10 +177,10 @@ if st.button("変換する！"):
                 # --- SNSボタン（拡散力アップ版） ---
                 # 1. シェアする文章を組み立てる
                 tweet_text = (
-                 f"【INFPメーカー】で変換したよ🦋\n"
-                 f"「{result_text[:30]}...」\n\n"
+                 f"【INFPメーカー】でINFPに変身してみた🦋\n\n"
+                 f"「{result_text[:50]}...」\n\n"
                  f"Created by @cotty_personal\n"
-                 f"#mbti #infp #INFPメーカー"
+                 f"#MBTI #INFP #INFPメーカー"
                 )
         
                 # 2. アプリのURL（これを入れないとカードが出ません！）
