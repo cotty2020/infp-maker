@@ -149,11 +149,25 @@ if st.button("変換する！"):
                 result_text = response.text
                 st.success(result_text)
                 
-                # SNSボタン
+                
+                # --- SNSボタン（位置調整版） ---
                 tweet_text = f"【INFPメーカー】で変換したよ！\n\n「{result_text[:30]}...」"
                 tweet_url = f"https://twitter.com/intent/tweet?text={urllib.parse.quote(tweet_text)}"
-                st.markdown(f'<center><a href="{tweet_url}" target="_blank" style="background-color:#1DA1F2;color:white;padding:10px 20px;border-radius:20px;text-decoration:none;font-weight:bold;">𝕏 でシェアする</a></center>', unsafe_allow_html=True)
+        
+                # margin-top: 50px; を追加して、ボタンの上に50pxの余白を作ります
+                st.markdown(f'''
+                <div style="margin-top: 50px; text-align: center;">
+                <a href="{tweet_url}" target="_blank" 
+                   style="background-color:#1DA1F2; color:white; padding:12px 24px; 
+                          border-radius:25px; text-decoration:none; font-weight:bold;
+                          box-shadow: 0 4px 12px rgba(29, 161, 242, 0.3);">
+                    𝕏 でシェアする
+                </a>
+               </div>
+               ''', unsafe_allow_html=True)
                 
+
+
                 # アフィリエイト
                 st.markdown("<br><br>", unsafe_allow_html=True) 
                 st.caption("【PR】本ページはアフィリエイト広告を利用しています")
