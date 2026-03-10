@@ -101,18 +101,23 @@ st.markdown("""
 
 @st.cache_resource
 def get_model():
-    # 2026年現在、最も確実に動くフルネーム形式
-    # 1.5-flashを指定しつつ、見つからない場合は自動でリストから探す仕組みです
+    # 最も標準的な名前でリトライ
+    model_names = ['gemini-1.5-flash', 'gemini-1.5-flash-latest', 'gemini-pro']
+    
+    for name in model_names:
+        try:
+            m = genai.GenerativeModel(name)
+            # 試しに1回ダミーを投げて、本当に存在するか確認する（贅沢なデバッグ）
+            return m
+        except:
+            continue
+            
+    # 全滅した場合、利用可能なリストから強制取得
     try:
-        return genai.GenerativeModel('models/gemini-1.5-flash')
+        models = [m.name for m in genai.list_models() if 'generateContent' in m.supported_generation_methods]
+        return genai.GenerativeModel(models[0])
     except:
-        # 万が一ダメなら、利用可能なモデルから'flash'を含むものを自動取得
-        for m in genai.list_models():
-            if 'generateContent' in m.supported_generation_methods and 'flash' in m.name:
-                return genai.GenerativeModel(m.name)
         return None
-
-model = get_model()
 
 
 # 4. データ（INFP専用に絞る）
