@@ -2,25 +2,24 @@
 import streamlit as st
 import google.generativeai as genai
 import urllib.parse
-import streamlit as st
-import urllib.parse  # 
+import os
 
-# ページの基本設定（ここを書き換える）
+# 1. ページの基本設定（ここを1回だけに集約！）
 st.set_page_config(
     page_title="INFPメーカー | あなたの言葉をエモく変換",
     page_icon="🦋",
-    # ↓ここにRaw URLを直接指定します
     menu_items={
         'About': "https://raw.githubusercontent.com/cotty2020/infp-maker/64fc2c83914eafdb02b6a5ee724a53a341eb60d7/ogp_infp.png"
     }
 )
 
-# 1. APIキーの設定
-# ローカルでは secrets.toml、ネット公開後は Streamlit Cloud の Secrets を自動で見に行きます
-genai.configure(api_key=st.secrets["GOOGLE_API_KEY"])
-
-# 2. ページ設定
-st.set_page_config(page_title="INFPタイプ変換", page_icon="🦋")
+# 2. APIキーの設定
+# Secretsの名前が "GOOGLE_API_KEY" であることを確認してください
+try:
+    genai.configure(api_key=st.secrets["GOOGLE_API_KEY"])
+except:
+    st.error("APIキーが見つかりません。StreamlitのSecretsに 'GOOGLE_API_KEY' を設定してください。")
+    st.stop()
 
 # --- ダークモード用カスタムデザイン ---
 st.markdown("""
@@ -97,34 +96,27 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# 3. モデル準備 (キャッシュして高速化)
-
+# 3. モデル準備
 @st.cache_resource
 def get_model():
-    # 2026年3月現在、Streamlit Cloudで最も安定して動く指定方法
+    # 最も確実な「フルネーム」で取得を試みます
     try:
-        # 1. まずは標準的な名前で試す
-        return genai.GenerativeModel('gemini-1.5-flash')
-    except:
-        try:
-            # 2. ダメなら利用可能なリストから自動取得
-            for m in genai.list_models():
-                if 'generateContent' in m.supported_generation_methods:
-                    return genai.GenerativeModel(m.name)
-        except Exception as e:
-            st.error(f"モデルの取得に失敗しました: {e}")
-            return None
+        # リストから動的に取得するのが一番安全
+        for m in genai.list_models():
+            if 'generateContent' in m.supported_generation_methods and 'flash' in m.name:
+                return genai.GenerativeModel(m.name)
+        # 万が一リストが取れない場合の予備
+        return genai.GenerativeModel('models/gemini-1.5-flash')
+    except Exception as e:
+        return None
 
-# --- ここが重要！ ---
 model = get_model()
 
-# もしmodelがNone（空）だったら、アプリを止めてメッセージを出す
 if model is None:
-    st.error("AIモデルの準備ができていません。APIキーの設定やネット接続を確認してください。")
+    st.error("AIモデルの準備に失敗しました。APIキーを確認してください。")
     st.stop()
 
-
-# 4. データ（INFP専用に絞る）
+# 4. データ
 mbti_data = {
     "INFP (仲介者)": {
         "icon": "🍄", 
@@ -135,65 +127,53 @@ mbti_data = {
 
 # 5. メイン画面
 st.title("🦋 INFP変換メーカー")
+st.markdown("入力した文章を、INFPになりきってリライトします。")
 
-st.markdown("""
-入力した文章を、INFPになりきってリライトします。
-INFPならどう表現するか、心の個性を楽しんでみてください。
-""")
-
-# 選択なしでINFPを固定
 selected_type = "INFP (仲介者)"
-
-# 特徴を表示
 st.info(f"**【{selected_type}の特徴】**\n{mbti_data[selected_type]['info']}")
 
-st.subheader("文章を入力")
 user_input = st.text_area("書き換えたい文章を入力してください", "今日はいい天気ですね。")
 
-if st.button("変換する！", use_container_width=True):
-    with st.spinner("思考回路を書き換え中..."):
-        instruction = mbti_data[selected_type]["desc"]
-        prompt = f"以下の文章を、{instruction}\n\n文章：{user_input}"
-        
-        response = model.generate_content(prompt)
-        
-        st.markdown("### 🎁 変換結果")
-        st.success(response.text)
-        
-        # SNSボタン
-        tweet_text = f"【{selected_type}メーカー】で変換したよ！\n\n{response.text[:40]}..."
-        tweet_url = f"https://twitter.com/intent/tweet?text={urllib.parse.quote(tweet_text)}"
-        st.markdown(f'<center><a href="{tweet_url}" target="_blank" style="background-color:#1DA1F2;color:white;padding:10px 20px;border-radius:20px;text-decoration:none;">𝕏 でシェアする</a></center>', unsafe_allow_html=True)
+if st.button("変換する！"):
+    if not user_input.strip():
+        st.warning("文章を入力してください。")
+    else:
+        with st.spinner("思考回路を書き換え中..."):
+            try:
+                instruction = mbti_data[selected_type]["desc"]
+                prompt = f"以下の文章を、{instruction}\n\n文章：{user_input}"
+                
+                response = model.generate_content(prompt)
+                
+                st.markdown("### 🎁 変換結果")
+                result_text = response.text
+                st.success(result_text)
+                
+                # SNSボタン
+                tweet_text = f"【INFPメーカー】で変換したよ！\n\n「{result_text[:30]}...」"
+                tweet_url = f"https://twitter.com/intent/tweet?text={urllib.parse.quote(tweet_text)}"
+                st.markdown(f'<center><a href="{tweet_url}" target="_blank" style="background-color:#1DA1F2;color:white;padding:10px 20px;border-radius:20px;text-decoration:none;font-weight:bold;">𝕏 でシェアする</a></center>', unsafe_allow_html=True)
+                
+                # アフィリエイト
+                st.markdown("<br><br>", unsafe_allow_html=True) 
+                st.caption("【PR】本ページはアフィリエイト広告を利用しています")
+                st.subheader("🌙 INFPの感性を守る、今夜のしおり")
+                col1, col2 = st.columns([1, 2])
+                with col1:
+                    st.image("https://m.media-amazon.com/images/I/81XyLz8B39L._SL1500_.jpg", width=130)
+                with col2:
+                    st.markdown("#### 「気がつきすぎて疲れる」が根こそぎなくなる本")
+                    st.link_button("Amazonで詳しく見る", "https://amzn.to/4d4E96I")
+            except Exception as e:
+                st.error("AIの変換中にエラーが起きました。少し待ってからやり直してください。")
 
-
-        # --- アフィリエイトエリア ---
-        st.markdown("<br><br>", unsafe_allow_html=True) 
-        st.caption("【PR】本ページはアフィリエイト広告を利用しています")
-        
-        st.subheader("🌙 INFPの感性を守る、今夜のしおり")
-        col1, col2 = st.columns([1, 2])
-        with col1:
-            st.image("https://m.media-amazon.com/images/I/81XyLz8B39L._SL1500_.jpg", width=130)
-        with col2:
-            st.markdown("#### 「気がつきすぎて疲れる」が根こそぎなくなる本")
-            st.link_button("Amazonで詳しく見る", "https://amzn.to/4d4E96I")
-
-
-
-
-# 8. フッター（最下部）
+# 8. フッター
 st.markdown("---")
-# あなたの𝕏ユーザーID（@以降の英数字）を 'your_screen_name' に入れてください
 x_id = "cotty_personal" 
 footer_html = f"""
     <div style="text-align: center; color: #888; font-size: 0.8rem;">
-    <div style="max-width: 600px; margin: 0 auto 20px auto; font-size: 0.7rem; color: #666; text-align: left; border-top: 1px solid #333; padding-top: 15px;">
-            ※ 本サイトは、Amazon.co.jpを宣伝しリンクすることによって紹介料を獲得できる手段を提供することを目的に設定されたアフィリエイトプログラムである、Amazonアソシエイト・プログラムの参加者です。
-        </div>
-        Created by 
-        <a href="https://x.com/{x_id}" target="_blank" style="color: #4B9CD3; text-decoration: none;">
-            @{x_id}
-        </a> 2026
+        <p style="font-size: 0.7rem;">※ Amazonアソシエイト・プログラム参加者です。</p>
+        Created by <a href="https://x.com/{x_id}" target="_blank" style="color: #4B9CD3; text-decoration: none;">@{x_id}</a>
     </div>
 """
 st.markdown(footer_html, unsafe_allow_html=True)
