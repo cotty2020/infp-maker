@@ -9,8 +9,12 @@ st.set_page_config(
     page_title="INFPメーカー | あなたの言葉をエモく変換",
     page_icon="🦋",
     menu_items={
-        'About': "https://raw.githubusercontent.com/cotty2020/infp-maker/64fc2c83914eafdb02b6a5ee724a53a341eb60d7/ogp_infp.png"
-    }
+        'About': f"""
+        ### INFPメーカー
+        あなたの言葉を、心の奥深くに潜るような優しい言葉に変換します。
+        
+        ![OGP]({ "https://raw.githubusercontent.com/cotty2020/infp-maker/d7e6617dcdd1d97978c8da4580abbaa4e8cd7f4e/ogp.png" })
+        """}
 )
 
 # 2. APIキーの設定
@@ -157,21 +161,38 @@ if st.button("変換する！"):
                 st.success(result_text)
                 
                 
-                # --- SNSボタン（位置調整版） ---
-                tweet_text = f"【INFPメーカー】で変換したよ！\n\n「{result_text[:30]}...」"
-                tweet_url = f"https://twitter.com/intent/tweet?text={urllib.parse.quote(tweet_text)}"
+               
+                
+
+                # --- SNSボタン（拡散力アップ版） ---
+                # 1. シェアする文章を組み立てる
+                tweet_text = (
+                 f"【INFPメーカー】で変換したよ🦋\n"
+                 f"「{result_text[:30]}...」\n\n"
+                 f"Created by @cotty_personal\n"
+                 f"#mbti #infp #INFPメーカー"
+                )
         
-                # margin-top: 50px; を追加して、ボタンの上に50pxの余白を作ります
+                # 2. アプリのURL（これを入れないとカードが出ません！）
+                app_url = "https://infp-maker.streamlit.app/"
+        
+                # 3. URLエンコード（日本語やハッシュタグを正しく飛ばすため）
+                encoded_text = urllib.parse.quote(tweet_text)
+                encoded_url = urllib.parse.quote(app_url)
+        
+                # 4. シェア用リンクの作成
+                tweet_url = f"https://twitter.com/intent/tweet?text={encoded_text}&url={encoded_url}"
+        
                 st.markdown(f'''
                 <div style="margin-top: 20px; text-align: center;">
-                <a href="{tweet_url}" target="_blank" 
-                   style="background-color:#1DA1F2; color:white; padding:12px 30px; 
+                   <a href="{tweet_url}" target="_blank" 
+                       style="background-color:#1DA1F2; color:white; padding:12px 30px; 
                           border-radius:25px; text-decoration:none; font-weight:bold;
                           box-shadow: 0 4px 12px rgba(29, 161, 242, 0.3);">
-                    𝕏 でシェアする
-                </a>
-               </div>
-               ''', unsafe_allow_html=True)
+                       𝕏 でシェアする
+                   </a>
+                </div>
+                ''', unsafe_allow_html=True)
                 
 
 
