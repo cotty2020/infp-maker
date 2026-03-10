@@ -2,6 +2,18 @@
 import streamlit as st
 import google.generativeai as genai
 import urllib.parse
+import streamlit as st
+import urllib.parse  # 
+
+# ページの基本設定（ここを書き換える）
+st.set_page_config(
+    page_title="INFPメーカー | あなたの言葉をエモく変換",
+    page_icon="🦋",
+    # ↓ここにRaw URLを直接指定します
+    menu_items={
+        'About': "https://raw.githubusercontent.com/cotty2020/infp-maker/64fc2c83914eafdb02b6a5ee724a53a341eb60d7/ogp_infp.png"
+    }
+)
 
 # 1. APIキーの設定
 # ローカルでは secrets.toml、ネット公開後は Streamlit Cloud の Secrets を自動で見に行きます
@@ -24,12 +36,7 @@ st.markdown("""
         height: 0 !important;
         display: none !important;
     }
-            /* 右下の「Manage App」ボタンやGitHubへのリンクが含まれる要素を強制抹消 */
-button[data-testid="stManageAppButton"],
-.stAppDeployButton,
-a[href*="streamlit"] {
-    display: none !important;
-}
+           
     
     /* 背景をダークグレーに、文字を白に固定 */
     .stApp {
@@ -91,12 +98,10 @@ a[href*="streamlit"] {
     """, unsafe_allow_html=True)
 
 # 3. モデル準備 (キャッシュして高速化)
+
 @st.cache_resource
 def get_model():
-    for m in genai.list_models():
-        if 'generateContent' in m.supported_generation_methods:
-            return genai.GenerativeModel(m.name)
-    return None
+    return genai.GenerativeModel('gemini-2.0-flash')
 
 model = get_model()
 
@@ -128,72 +133,41 @@ st.subheader("文章を入力")
 user_input = st.text_area("書き換えたい文章を入力してください", "今日はいい天気ですね。")
 
 if st.button("INFP風に変換する！", use_container_width=True):
-    with st.spinner("思考回路を書き換え中..."):
-        instruction = mbti_data[selected_type]["desc"]
-        prompt = f"以下の文章を、{instruction}\n\n文章：{user_input}"
-        
-        response = model.generate_content(prompt)
-        
+        # 1. まずAIで生成する（spinnerの中で完結させる）
+        with st.spinner("思考回路を書き換え中..."):
+            instruction = mbti_data[selected_type]["desc"]
+            prompt = f"以下の文章を、{instruction}\n\n文章：{user_input}"
+            response = model.generate_content(prompt)
+            result_text = response.text # ここで変数に代入しておく
+
+        # 2. 生成が終わったら、一気に表示する（ここからはインデントを1段戻す）
         st.markdown("### 🎁 変換結果")
-        st.success(response.text)
+        st.success(result_text)
 
-       
-        # --- 余白（結果とシェアボタンの間） ---
-        st.write("") 
-        st.write("")
-        # SNSボタン
-        # 1. あなたのアプリの新しいURL
+        # --- 境界線とボタン ---
+        st.divider() # write("---")より確実な境界線
+        
+        import urllib.parse
         app_url = "https://infp-maker.streamlit.app/" 
+        tweet_content = f"【#INFPメーカー】で変換したよ！✨\n\n▼ ここで変換できるよ\n{app_url}\n\n@cotty_personal #MBTI #INFP"
+        tweet_url = f"https://twitter.com/intent/tweet?text={urllib.parse.quote(tweet_content)}"
 
-        # 2. ツイート文面の構築
-        tweet_text = (
-           f"【#INFPメーカー】で文章を変換してみたよ！✨\n\n"
-           f"「{response.text[:60]}...」\n\n" # 結果をチラ見せして興味を引く
-           f"▼ ここで変換できるよ\n{app_url}\n\n"
-           f"Created by @cotty_personal\n"
-           f"#MBTI #INFP"
-)
-
-        # 3. URLエンコードしてシェア用URLを作成
-        tweet_url = f"https://twitter.com/intent/tweet?text={urllib.parse.quote(tweet_text)}"
+        # シェアボタン
+        st.link_button("𝕏 で結果をシェアする", tweet_url, type="primary", use_container_width=True)
         
-        # センター寄せ＆少し余裕を持たせたデザイン
-        st.markdown(
-            f'<div style="text-align: center; margin: 20px 0;">'
-            f'<a href="{tweet_url}" target="_blank" style="background-color:#1DA1F2;color:white;padding:12px 30px;border-radius:25px;text-decoration:none;font-weight:bold;box-shadow: 0 4px 15px rgba(29, 161, 242, 0.3);">𝕏 で結果をシェアする</a>'
-            f'</div>', 
-            unsafe_allow_html=True
-        )
+        st.divider()
 
-        
-        # ---------------------------------------------------------
-        # ここから追記：アフィリエイトエリア
-        # ---------------------------------------------------------
-        # --- 大きめの余白（シェアと広告の間。ここが「心理的な区切り」になります） ---
-        st.markdown("<br><br><br>", unsafe_allow_html=True) 
-
-        # 3. アフィリエイトエリア（「おすすめ」として提示）
+        # --- アフィリエイトエリア ---
+        st.markdown("<br><br>", unsafe_allow_html=True) 
         st.caption("【PR】本ページはアフィリエイト広告を利用しています")
         
-        # 境界線（うっすらと）
-        st.markdown("---")
-        
         st.subheader("🌙 INFPの感性を守る、今夜のしおり")
-        st.write("このメーカーを気に入ってくれたあなたへ。私が救われた「自分を愛するための本」を紹介させてください。")
-        
         col1, col2 = st.columns([1, 2])
         with col1:
             st.image("https://m.media-amazon.com/images/I/81XyLz8B39L._SL1500_.jpg", width=130)
-            
         with col2:
             st.markdown("#### 「気がつきすぎて疲れる」が根こそぎなくなる本")
-            st.write("繊細さは、治すべき「弱さ」ではなく、守るべき「才能」です。もっと楽に呼吸するためのヒントがここにあります。")
-            # Amazonカラー（オレンジ系）のボタンで視覚的に区別
             st.link_button("Amazonで詳しく見る", "https://amzn.to/4d4E96I")
-
-        st.markdown("---")
-        # ---------------------------------------------------------
-
 
 
 
