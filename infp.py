@@ -101,7 +101,16 @@ st.markdown("""
 
 @st.cache_resource
 def get_model():
-    return genai.GenerativeModel('gemini-1.5-flash')
+    # 2026年現在、最も確実に動くフルネーム形式
+    # 1.5-flashを指定しつつ、見つからない場合は自動でリストから探す仕組みです
+    try:
+        return genai.GenerativeModel('models/gemini-1.5-flash')
+    except:
+        # 万が一ダメなら、利用可能なモデルから'flash'を含むものを自動取得
+        for m in genai.list_models():
+            if 'generateContent' in m.supported_generation_methods and 'flash' in m.name:
+                return genai.GenerativeModel(m.name)
+        return None
 
 model = get_model()
 
