@@ -132,30 +132,21 @@ st.info(f"**【{selected_type}の特徴】**\n{mbti_data[selected_type]['info']}
 st.subheader("文章を入力")
 user_input = st.text_area("書き換えたい文章を入力してください", "今日はいい天気ですね。")
 
-if st.button("INFP風に変換する！", use_container_width=True):
-        # 1. まずAIで生成する（spinnerの中で完結させる）
-        with st.spinner("思考回路を書き換え中..."):
-            instruction = mbti_data[selected_type]["desc"]
-            prompt = f"以下の文章を、{instruction}\n\n文章：{user_input}"
-            response = model.generate_content(prompt)
-            result_text = response.text # ここで変数に代入しておく
-
-        # 2. 生成が終わったら、一気に表示する（ここからはインデントを1段戻す）
+if st.button("変換する！", use_container_width=True):
+    with st.spinner("思考回路を書き換え中..."):
+        instruction = mbti_data[selected_type]["desc"]
+        prompt = f"以下の文章を、{instruction}\n\n文章：{user_input}"
+        
+        response = model.generate_content(prompt)
+        
         st.markdown("### 🎁 変換結果")
-        st.success(result_text)
-
-        # --- 境界線とボタン ---
-        st.divider() # write("---")より確実な境界線
+        st.success(response.text)
         
-        import urllib.parse
-        app_url = "https://infp-maker.streamlit.app/" 
-        tweet_content = f"【#INFPメーカー】で変換したよ！✨\n\n▼ ここで変換できるよ\n{app_url}\n\n@cotty_personal #MBTI #INFP"
-        tweet_url = f"https://twitter.com/intent/tweet?text={urllib.parse.quote(tweet_content)}"
+        # SNSボタン
+        tweet_text = f"【{selected_type}メーカー】で変換したよ！\n\n{response.text[:40]}..."
+        tweet_url = f"https://twitter.com/intent/tweet?text={urllib.parse.quote(tweet_text)}"
+        st.markdown(f'<center><a href="{tweet_url}" target="_blank" style="background-color:#1DA1F2;color:white;padding:10px 20px;border-radius:20px;text-decoration:none;">𝕏 でシェアする</a></center>', unsafe_allow_html=True)
 
-        # シェアボタン
-        st.link_button("𝕏 で結果をシェアする", tweet_url, type="primary", use_container_width=True)
-        
-        st.divider()
 
         # --- アフィリエイトエリア ---
         st.markdown("<br><br>", unsafe_allow_html=True) 
