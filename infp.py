@@ -9,22 +9,19 @@ st.set_page_config(
     page_title="INFPメーカー | あなたの言葉をエモく変換",
     page_icon="🦋",
 )
-# --- 【重要】OGP画像を強制するためのHTMLメタタグ挿入 ---
+#--- OGP画像を強制するための設定 ---
 ogp_image_url = "https://raw.githubusercontent.com/cotty2020/infp-maker/d7e6617dcdd1d97978c8da4580abbaa4e8cd7f4e/ogp.png"
 app_url = "https://infp-maker.streamlit.app/"
 description = "あなたの言葉を、INFP特有の繊細でエモい表現にリライトします。"
 
+# headタグを外して、metaタグだけに整理
 st.markdown(f"""
-    <head>
-        <meta property="og:title" content="INFPメーカー">
-        <meta property="og:description" content="{description}">
-        <meta property="og:image" content="{ogp_image_url}">
-        <meta property="og:url" content="{app_url}">
-        <meta name="twitter:card" content="summary_large_image">
-        <meta name="twitter:image" content="{ogp_image_url}">
-        <meta name="twitter:title" content="INFPメーカー">
-        <meta name="twitter:description" content="{description}">
-    </head>
+    <meta property="og:title" content="INFPメーカー">
+    <meta property="og:description" content="{description}">
+    <meta property="og:image" content="{ogp_image_url}">
+    <meta property="og:url" content="{app_url}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="{ogp_image_url}">
     """, unsafe_allow_html=True)
 
 # 2. APIキーの設定
