@@ -156,9 +156,9 @@ if st.button("変換する！"):
         
                 # margin-top: 50px; を追加して、ボタンの上に50pxの余白を作ります
                 st.markdown(f'''
-                <div style="margin-top: 50px; text-align: center;">
+                <div style="margin-top: 20px; text-align: center;">
                 <a href="{tweet_url}" target="_blank" 
-                   style="background-color:#1DA1F2; color:white; padding:12px 24px; 
+                   style="background-color:#1DA1F2; color:white; padding:12px 30px; 
                           border-radius:25px; text-decoration:none; font-weight:bold;
                           box-shadow: 0 4px 12px rgba(29, 161, 242, 0.3);">
                     𝕏 でシェアする
@@ -174,7 +174,7 @@ if st.button("変換する！"):
                 st.subheader("🌙 INFPの感性を守る、今夜のしおり")
                 col1, col2 = st.columns([1, 2])
                 with col1:
-                    st.image("https://m.media-amazon.com/images/I/81XyLz8B39L._SL1500_.jpg", width=130)
+                    st.image("https://m.media-amazon.com/images/I/71nTn7hMNdL._SY522_.jpg", width=130)
                 with col2:
                     st.markdown("#### 「気がつきすぎて疲れる」が根こそぎなくなる本")
                     st.link_button("Amazonで詳しく見る", "https://amzn.to/4d4E96I")
@@ -186,7 +186,7 @@ st.markdown("---")
 x_id = "cotty_personal" 
 footer_html = f"""
     <div style="text-align: center; color: #888; font-size: 0.8rem;">
-        <p style="font-size: 0.7rem;">※ Amazonアソシエイト・プログラム参加者です。</p>
+        <p style="font-size: 0.7rem;">※本サイトは、 Amazonアソシエイト・プログラムの参加者として、適格販売により収入を得ています。</p>
         Created by <a href="https://x.com/{x_id}" target="_blank" style="color: #4B9CD3; text-decoration: none;">@{x_id}</a>
     </div>
 """
