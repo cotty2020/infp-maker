@@ -101,23 +101,27 @@ st.markdown("""
 
 @st.cache_resource
 def get_model():
-    # 最も標準的な名前でリトライ
-    model_names = ['gemini-1.5-flash', 'gemini-1.5-flash-latest', 'gemini-pro']
-    
-    for name in model_names:
-        try:
-            m = genai.GenerativeModel(name)
-            # 試しに1回ダミーを投げて、本当に存在するか確認する（贅沢なデバッグ）
-            return m
-        except:
-            continue
-            
-    # 全滅した場合、利用可能なリストから強制取得
+    # 2026年3月現在、Streamlit Cloudで最も安定して動く指定方法
     try:
-        models = [m.name for m in genai.list_models() if 'generateContent' in m.supported_generation_methods]
-        return genai.GenerativeModel(models[0])
+        # 1. まずは標準的な名前で試す
+        return genai.GenerativeModel('gemini-1.5-flash')
     except:
-        return None
+        try:
+            # 2. ダメなら利用可能なリストから自動取得
+            for m in genai.list_models():
+                if 'generateContent' in m.supported_generation_methods:
+                    return genai.GenerativeModel(m.name)
+        except Exception as e:
+            st.error(f"モデルの取得に失敗しました: {e}")
+            return None
+
+# --- ここが重要！ ---
+model = get_model()
+
+# もしmodelがNone（空）だったら、アプリを止めてメッセージを出す
+if model is None:
+    st.error("AIモデルの準備ができていません。APIキーの設定やネット接続を確認してください。")
+    st.stop()
 
 
 # 4. データ（INFP専用に絞る）
