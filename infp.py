@@ -195,9 +195,9 @@ if st.button("変換する！"):
                    </a>
                 </div>
                 <script>
-                  // JavaScriptで、アプリがあればアプリ、なければブラウザを開く制御
-                  const btn = document.querySelector('a[href^="twitter://"]');
-                  btn.onclick = function(e) {{
+                    // JavaScriptで、アプリがあればアプリ、なければブラウザを開く制御
+                    const btn = document.querySelector('a[href^="twitter://"]');
+                    btn.onclick = function(e) {{
                       e.preventDefault();
                       const appUrl = this.href;
                       const webUrl = "{tweet_url}";
@@ -216,35 +216,35 @@ if st.button("変換する！"):
 
 
                 # アフィリエイト
-                st.markdown("<br><br>", unsafe_allow_html=True) 
-                st.caption("【PR】")
-                st.subheader("🌙 INFPっぽいアイテムたち")
-                # 3つの列を作成
-                col_a, col_b, col_c = st.columns(3)
+            #     st.markdown("<br><br>", unsafe_allow_html=True) 
+            #     st.caption("【PR】")
+            #     st.subheader("🌙 INFPっぽいアイテムたち")
+            #     # 3つの列を作成
+            #     col_a, col_b, col_c = st.columns(3)
 
-               # 1つ目：月ライト
-                with col_a:
-                    link_a = "https://amzn.to/4bgyJTM"
-                    img_a = "https://m.media-amazon.com/images/I/61KoufevM4L._AC_SL1000_.jpg"
-                    st.markdown(f'<a href="{link_a}" target="_blank"><img src="{img_a}" style="width:100%; border-radius:10px; transition: 0.3s;" onmouseover="this.style.opacity=\'0.8\'" onmouseout="this.style.opacity=\'1\'"></a>', unsafe_allow_html=True)
-                    st.markdown("**自分だけの夜を照らす「月ライト」**")
-                    st.link_button("Amazon", link_a)
+            #    # 1つ目：月ライト
+            #     with col_a:
+            #         link_a = "https://amzn.to/4bgyJTM"
+            #         img_a = "https://m.media-amazon.com/images/I/61KoufevM4L._AC_SL1000_.jpg"
+            #         st.markdown(f'<a href="{link_a}" target="_blank"><img src="{img_a}" style="width:100%; border-radius:10px; transition: 0.3s;" onmouseover="this.style.opacity=\'0.8\'" onmouseout="this.style.opacity=\'1\'"></a>', unsafe_allow_html=True)
+            #         st.markdown("**自分だけの夜を照らす「月ライト」**")
+            #         st.link_button("Amazon", link_a)
 
-                # 2つ目：アロマキャンドル
-                with col_b:
-                    link_b = "https://amzn.to/46OnY9U"
-                    img_b = "https://m.media-amazon.com/images/I/51zCzizxKgL._AC_SL1320_.jpg"
-                    st.markdown(f'<a href="{link_b}" target="_blank"><img src="{img_b}" style="width:100%; border-radius:10px; transition: 0.3s;" onmouseover="this.style.opacity=\'0.8\'" onmouseout="this.style.opacity=\'1\'"></a>', unsafe_allow_html=True)
-                    st.markdown("**パチパチ音がする焚き火キャンドル**")
-                    st.link_button("Amazon", link_b)
+            #     # 2つ目：アロマキャンドル
+            #     with col_b:
+            #         link_b = "https://amzn.to/46OnY9U"
+            #         img_b = "https://m.media-amazon.com/images/I/51zCzizxKgL._AC_SL1320_.jpg"
+            #         st.markdown(f'<a href="{link_b}" target="_blank"><img src="{img_b}" style="width:100%; border-radius:10px; transition: 0.3s;" onmouseover="this.style.opacity=\'0.8\'" onmouseout="this.style.opacity=\'1\'"></a>', unsafe_allow_html=True)
+            #         st.markdown("**パチパチ音がする焚き火キャンドル**")
+            #         st.link_button("Amazon", link_b)
 
-                # 3つ目：本
-                with col_c:
-                    link_c = "https://amzn.to/4rpFIjd"
-                    img_c = "https://m.media-amazon.com/images/I/71nTn7hMNdL._SY522_.jpg"
-                    st.markdown(f'<a href="{link_c}" target="_blank"><img src="{img_c}" style="width:100%; border-radius:10px; transition: 0.3s;" onmouseover="this.style.opacity=\'0.8\'" onmouseout="this.style.opacity=\'1\'"></a>', unsafe_allow_html=True)
-                    st.markdown("**「気がつきすぎて疲れる」がなくなる本**")
-                    st.link_button("Amazon", link_c)
+            #     # 3つ目：本
+            #     with col_c:
+            #         link_c = "https://amzn.to/4rpFIjd"
+            #         img_c = "https://m.media-amazon.com/images/I/71nTn7hMNdL._SY522_.jpg"
+            #         st.markdown(f'<a href="{link_c}" target="_blank"><img src="{img_c}" style="width:100%; border-radius:10px; transition: 0.3s;" onmouseover="this.style.opacity=\'0.8\'" onmouseout="this.style.opacity=\'1\'"></a>', unsafe_allow_html=True)
+            #         st.markdown("**「気がつきすぎて疲れる」がなくなる本**")
+            #         st.link_button("Amazon", link_c)
 
                 
             except Exception as e:
@@ -255,7 +255,7 @@ st.markdown("---")
 x_id = "cotty_personal" 
 footer_html = f"""
     <div style="text-align: center; color: #888; font-size: 0.8rem;">
-        <p style="font-size: 0.7rem;">※本サイトは、 Amazonアソシエイト・プログラムの参加者として、適格販売により収入を得ています。</p>
+        
         Created by <a href="https://x.com/{x_id}" target="_blank" style="color: #4B9CD3; text-decoration: none;">@{x_id}</a>
     </div>
 """
