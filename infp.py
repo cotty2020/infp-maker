@@ -249,9 +249,17 @@ if st.button("変換する！"):
 # 8. フッター
 st.markdown("---")
 x_id = "cotty_personal" 
+note_url = "https://note.com/cotty_personal/n/n99e7c8aac3e5"
+
 footer_html = f"""
-    <div style="text-align: center; color: #888; font-size: 0.8rem;">
-    Created by <a href="https://x.com/{x_id}" target="_blank" style="color: #4B9CD3; text-decoration: none;">@{x_id}</a>
+    <div style="text-align: center; color: #888; font-size: 0.8rem; line-height: 1.6;">
+        <div style="margin-bottom: 15px;">
+            <a href="{note_url}" target="_blank" 
+               style="color: #4B9CD3; text-decoration: none; font-weight: bold; border: 1px solid #4B9CD3; padding: 5px 15px; border-radius: 20px;">
+               📝 F型とT型のコミュニケーションで、もう傷つかないためには？
+            </a>
+        </div>
+        Created by <a href="https://x.com/{x_id}" target="_blank" style="color: #4B9CD3; text-decoration: none;">@{x_id}</a>
     </div>
 """
 st.markdown(footer_html, unsafe_allow_html=True)
