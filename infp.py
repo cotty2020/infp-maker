@@ -255,8 +255,7 @@ st.markdown("---")
 x_id = "cotty_personal" 
 footer_html = f"""
     <div style="text-align: center; color: #888; font-size: 0.8rem;">
-        
-        Created by <a href="https://x.com/{x_id}" target="_blank" style="color: #4B9CD3; text-decoration: none;">@{x_id}</a>
+    Created by <a href="https://x.com/{x_id}" target="_blank" style="color: #4B9CD3; text-decoration: none;">@{x_id}</a>
     </div>
 """
 st.markdown(footer_html, unsafe_allow_html=True)
