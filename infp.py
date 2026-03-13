@@ -4,15 +4,31 @@ import google.generativeai as genai
 import urllib.parse
 import os
 
-# 1. ページの基本設定（ここを1回だけに集約！）
-st.set_page_config(
-    page_title="INFPメーカー | あなたの言葉をエモく変換",
-    page_icon="🦋",
-)
 #--- OGP画像を強制するための設定 ---
 ogp_image_url = "https://raw.githubusercontent.com/cotty2020/infp-maker/d7e6617dcdd1d97978c8da4580abbaa4e8cd7f4e/ogp.png"
 app_url = "https://infp-maker.streamlit.app/"
 description = "あなたの言葉を、INFP特有の繊細でエモい表現にリライトします。"
+
+# 1. ページの基本設定（ここを1回だけに集約！）
+st.set_page_config(
+    page_title="INFPメーカー | あなたの言葉をエモく変換",
+    page_icon="🦋",
+    menu_items={
+        'About': f"INFPメーカー\n\n{description}"
+    }
+)
+# 𝕏のクローラーに「画像はこれだよ！」と教えるためのタグ
+st.markdown(f"""
+    <head>
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="INFPメーカー">
+        <meta name="twitter:description" content="{description}">
+        <meta name="twitter:image" content="{ogp_image_url}">
+        <meta property="og:image" content="{ogp_image_url}">
+        <meta property="og:title" content="INFPメーカー">
+        <meta property="og:url" content="{app_url}">
+    </head>
+""", unsafe_allow_html=True)
 
 
 
