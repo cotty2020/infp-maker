@@ -163,54 +163,50 @@ if st.button("変換する！"):
                
                 
 
-                # --- SNSボタン（拡散力アップ版） ---
-                # 1. シェアする文章を組み立てる
+                # --- SNSボタン（PC/スマホ両対応・決定版） ---
                 tweet_text = (
-                 f"【INFPメーカー】でINFPに変身してみた🦋\n\n"
-                 f"「{result_text[:50]}...」\n\n"
-                 f"Created by @cotty_personal\n"
-                 f"#MBTI #INFP #INFPメーカー"
+                  f"【INFPメーカー】でINFPに変身してみた🦋\n\n"
+                  f"「{result_text[:50]}...」\n\n"
+                  f"Created by @cotty_personal\n"
+                  f"#MBTI #INFP #INFPメーカー"
                 )
-        
-                # 2. アプリのURL（これを入れないとカードが出ません！）
                 app_url = "https://infp-maker.streamlit.app/"
-        
-                # 3. URLエンコード（日本語やハッシュタグを正しく飛ばすため）
                 encoded_text = urllib.parse.quote(tweet_text)
                 encoded_url = urllib.parse.quote(app_url)
-        
-                # 2. ここがポイント！ブラウザ用とアプリ用でリンクを使い分けます
-                # twitter://post... という形式にすると、スマホアプリが優先的に開きます
+
+                # 基本はWeb版のURLを作成
                 tweet_url = f"https://twitter.com/intent/tweet?text={encoded_text}&url={encoded_url}"
-        
-                # HTMLのリンク部分を「twitter://」スキームに対応させる
+
                 st.markdown(f'''
-                <div style="margin-top: 20px; text-align: center;">
-                   <a href="twitter://post?message={encoded_text}%20{encoded_url}" 
-                     onclick="window.open('{tweet_url}'); return false;"
-                     style="background-color:#1DA1F2; color:white; padding:12px 30px; 
-                          border-radius:25px; text-decoration:none; font-weight:bold;
-                          box-shadow: 0 4px 12px rgba(29, 161, 242, 0.3);">
-                    𝕏 でシェアする
-                   </a>
-                </div>
-                <script>
-                    // JavaScriptで、アプリがあればアプリ、なければブラウザを開く制御
-                    const btn = document.querySelector('a[href^="twitter://"]');
-                    btn.onclick = function(e) {{
-                      e.preventDefault();
-                      const appUrl = this.href;
-                      const webUrl = "{tweet_url}";
+                   <div style="margin-top: 20px; text-align: center;">
+                       <a href="{tweet_url}" id="share-btn" target="_blank"
+                           style="background-color:#1DA1F2; color:white; padding:12px 30px; 
+                            border-radius:25px; text-decoration:none; font-weight:bold;
+                           box-shadow: 0 4px 12px rgba(29, 161, 242, 0.3); display: inline-block;">
+                           𝕏 でシェアする
+                       </a>
+                   </div>
+            
+                   <script>
+                      const btn = document.getElementById('share-btn');
+                      btn.onclick = function(e) {{
+                          // iOSかAndroidか判定
+                          const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+                
+                          if (isMobile) {{
+                              e.preventDefault();
+                               // スマホの場合はアプリ起動を試みる
+                               const appUrl = "twitter://post?message={encoded_text}%20{encoded_url}";
+                                window.location.href = appUrl;
                     
-                      // アプリ起動を試みる
-                      window.location.href = appUrl;
-                     
-                      // アプリが起動しなかった場合（PCなど）のために、少し遅れてブラウザ版を開く
-                      setTimeout(function() {{
-                          window.open(webUrl, '_blank');
-                       }}, 500);
-                   }};
-                </script>
+                                // アプリが入っていない場合のために、少し遅れてブラウザ版を開く
+                                 setTimeout(function() {{
+                                    window.open("{tweet_url}", "_blank");
+                                }}, 800);
+                            }}
+                           // PCの場合は何もしない（そのままhrefのtweet_urlが開く）
+                        }};
+                    </script>
                 ''', unsafe_allow_html=True)
                 
 
